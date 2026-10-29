@@ -1,0 +1,46 @@
+
+:root { --paper:#FAF9F5; --ink:#1F2937; --sub:#46505F; --muted:#788291;
+        --accent:#0D6E6C; --line:#E3E7EC; }
+* { box-sizing: border-box; }
+body { margin:0; background:var(--paper); color:var(--ink);
+  font-family:'LXGW WenKai','Noto Serif CJK SC',serif; line-height:1.9; }
+a { color:var(--accent); text-decoration:none; }
+a:hover { text-decoration:underline; }
+.wrap { max-width:760px; margin:0 auto; padding:48px 24px 96px; }
+h1,h2,h3 { line-height:1.5; }
+h1 { font-size:1.9rem; margin:.2em 0 .6em; }
+h2 { font-size:1.35rem; margin:2em 0 .5em; border-bottom:1px solid var(--line); padding-bottom:.3em; }
+h3 { font-size:1.1rem; margin:1.5em 0 .4em; }
+.kicker { color:var(--accent); font-size:.95rem; letter-spacing:.12em; }
+.meta { color:var(--muted); font-size:.9rem; }
+header.site { border-bottom:1px solid var(--line); background:#fff; }
+header.site .wrap { padding:20px 24px; display:flex; justify-content:space-between; align-items:baseline; }
+header.site .brand { font-size:1.15rem; font-weight:600; }
+header.site nav a { margin-left:20px; color:var(--sub); font-size:.95rem; }
+.hero { padding:56px 0 8px; }
+.hero h1 { font-size:2.2rem; }
+.card { background:#fff; border:1px solid var(--line); border-radius:12px;
+  padding:20px 24px; margin:18px 0; transition:box-shadow .15s; display:block; color:var(--ink); }
+.card:hover { box-shadow:0 4px 18px rgba(31,41,55,.08); text-decoration:none; }
+.card .t { font-size:1.12rem; font-weight:600; }
+.card .d { color:var(--muted); font-size:.92rem; margin-top:6px; }
+.notice { background:#F0F7F6; border:1px solid #CFE5E2; border-radius:10px;
+  padding:14px 18px; color:var(--sub); font-size:.92rem; margin:28px 0; }
+footer.site { border-top:1px solid var(--line); color:var(--muted);
+  font-size:.88rem; padding:24px; text-align:center; }
+table { border-collapse:collapse; width:100%; margin:1em 0; font-size:.95rem; }
+th,td { border:1px solid var(--line); padding:8px 12px; text-align:left; }
+th { background:#F2F1EC; }
+blockquote { border-left:4px solid var(--accent); margin:1em 0; padding:.2em 1em;
+  color:var(--sub); background:#fff; }
+code { background:#F2F1EC; padding:2px 6px; border-radius:4px; }
+/* 幻灯片模式 */
+.deck { height:100vh; overflow-y:scroll; scroll-snap-type:y mandatory; }
+.slide { height:100vh; scroll-snap-align:start; display:flex; flex-direction:column;
+  justify-content:center; padding:0 9%; border-bottom:1px solid var(--line); }
+.slide .k { color:var(--accent); letter-spacing:.12em; font-size:1rem; margin-bottom:1em; }
+.slide .t { font-size:2.4rem; font-weight:600; line-height:1.45; }
+.slide .b { font-size:1.25rem; color:var(--sub); margin-top:1.2em; }
+.slide .m { margin-top:2em; color:var(--muted); font-size:.9rem; }
+.hint { position:fixed; bottom:18px; right:24px; color:var(--muted); font-size:.85rem; }
+@media (max-width:640px){ .slide .t{font-size:1.6rem} .slide .b{font-size:1.05rem} }
