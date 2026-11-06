@@ -1,0 +1,29 @@
+<!DOCTYPE html><html lang="zh"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>vLLM 从零部署实战：把开源模型装进自己的机器，OpenAI 接口直接用 · 蓝色大肥鱼 Lab</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lxgw-wenkai-webfont@1.7.0/style.css">
+<link rel="stylesheet" href="/style.css"></head>
+<body><header class="site"><div class="wrap">
+  <a class="brand" href="/">蓝色大肥鱼 · Lab</a>
+  <nav><a href="/">文章</a><a href="/slides/radar-01.html">选题雷达</a><a href="/about.html">关于与合规</a></nav>
+</div></header><main class="wrap">
+<div class="kicker">实测拆解</div>
+<h1>vLLM 从零部署实战：把开源模型装进自己的机器，OpenAI 接口直接用</h1>
+<div class="meta">AI 编程 · 阅读 6 分钟</div>
+<p><strong>这条视频用大约十分钟，带你把 vLLM 从零跑起来：确认环境、装依赖、预下载内核、启动服务、验证接口，最后再讲清本地部署到底值不值。</strong></p>
+<h2>先说结论</h2>
+<p>最值得记住的判断是：本地部署不是默认更便宜，只有高频重复或数据敏感的负载，才更值得先把电费、折旧和显存门槛算清楚再动手。</p>
+<p>如果你已经在用 Cursor、Claude Code 或 Copilot，这套步骤能帮你把模型服务接成 OpenAI 兼容接口，直接验证本地部署是否真的适合你现有的开发流程，而不是只停留在「装个模型玩玩」。</p>
+<h2>展开</h2>
+<ol><li>先确认系统底座：官方快速开始页要求 Linux，Python 版本是 3.11 到 3.14；macOS 可以走 vLLM-Metal，在 Apple Silicon 上运行。先对齐这三项，再谈后面的命令。</li><li>硬件平台是分岔口：NVIDIA CUDA、AMD ROCm、Intel GPU、Google TPU、华为 Ascend NPU 插件、Apple Silicon 各自有不同安装路径，选错平台，后面的命令基本都用不上。</li><li>AMD 这条路线的官方要求写得更具体：Python 3.12 搭配 ROCm 7.0、glibc 大于等于 2.35；Intel GPU 从 v0.26.0 起提供官方 Docker 镜像；TPU 用 vllm-tpu 包。</li><li>环境用 uv 管起来最省事：uv venv --python 3.12 --seed 一步创建虚拟环境并装好基础依赖。接着 source .venv/bin/activate 激活，之后所有安装和启动命令都在这个环境里跑。</li><li>然后执行 uv pip install vllm --torch-backend=auto。auto 的含义是按你已经装好的 CUDA 驱动自动选择对应的 PyTorch 索引，它解决的是依赖来源，不是替你判断所有硬件条件。</li><li>装完别急着启动，先执行 vllm download-kernels，把已经编译好的内核预下载下来。这一步专门用来避免启动时在 Hopper 及更新的 GPU 上现场编译、卡上几分钟。</li><li>官方明确提示：新手最常见的「启动卡住几分钟」，多数情况就是漏了这一步。所以 download-kernels 不是可选优化，而是 NVIDIA 路线上的标准动作。</li><li>启动第一个模型：vllm serve Qwen/Qwen2.5-1.5B-Instruct。选 1.5B 级的小模型入门，是因为门槛低、反馈快，能先把整条链路跑通，再考虑换更大的模型。</li><li>服务默认监听 http://localhost:8000，需要改地址就用 --host 和 --port。这个默认值方便本地验证，但不代表你可以不做任何防护就把端口暴露出去。</li><li>起完服务先自检三个端点：/v1/models、/v1/completions、/v1/chat/completions。先确认这三个都能正常返回，再谈接工具，能把问题范围缩得很小。</li><li>接工具时把 base_url 指到 http://localhost:8000/v1。Claude Code、OpenCode 这类工具的接入方式与云端 API 完全一致，这是本地部署最省事的地方。</li><li>访问控制用 --api-key，或者设 VLLM_API_KEY 环境变量，也可以传多个密钥做轮换。这属于接口鉴权配置，作用是控制谁能调用你的服务。</li><li>如果拉模型不顺，可以设 VLLM_USE_MODELSCOPE=True，从 ModelScope 下载，官方把它定位为对国内网络更友好的选择。是否可用仍要结合当前环境和模型仓库情况验证。</li><li>第一个真坑：llm.generate 不会自动应用聊天模板。对 Instruct 或 Chat 模型，要么手动用 tokenizer 应用模板，要么改用 llm.chat，否则送进去的格式和模型预期不一致。</li><li>第二个细节：默认采样参数取自模型仓库的 generation_config.json。如果你想要的是 vLLM 的默认值，必须显式加 --generation-config vllm，不然行为会被仓库里的配置带偏。</li><li>注意力后端可以用 --attention-backend 指定，比如 FLASH_ATTN、FLASHINFER。不同显卡适合哪个后端会不一样，具体可选项请以当前版本的 vllm --help 为准。</li><li>官方文档没写、但社区常用的补充参数（启动前同样以 vllm --help 为准）：多卡并行用 --tensor-parallel-size，也就是常说的 -tp。</li><li>显存紧张是老问题：--max-model-len 可以把上下文长度调短；INT4、INT8 量化能大幅降低显存门槛。老卡如 V100、T4 不支持 BF16，需要加 --dtype float16。</li><li>再回到成本：本地部署不是「免费」。显卡电费和折旧是真金白银，换来的是隐私、离线和零按量费，这三样才是它真正的卖点。</li><li>对照实测价格：云端 DeepSeek 空闲时段输入 1 元每百万 tokens、输出 4 元每百万。按这个量级算，小模型日常任务走云端按量，通常比自己养卡便宜。</li><li>所以本地部署的正确位置是「高频重复 + 数据敏感」的负载。如果只是为了省 API 费就买卡，建议先算自己的月用量，再决定要不要投硬件。</li><li>顺带说选题背景：「vLLM 部署教程」在鱼选题雷达 21 个题材里排第 6，历史头部 90 万播放；同期另一条讲本地部署坑点的视频 5 天 1.3 万播放，话题正在升温。</li></ol>
+<h2>边界说明</h2>
+<p>官方快速开始页没有给出不同模型规模的明确显存门槛，本文不做具体承诺；教程以 Qwen 1.5B 级小模型入门，多卡、量化、老卡兼容性和上下文长度等属于社区补充参数，启动前请以模型卡片和 vllm --help 为准。</p>
+
+## 参考来源
+
+本文事实依据与抓取入口：[vLLM 从零部署实战：把开源模型装进自己的机器，OpenAI 接口直接用](https://docs.vllm.ai/en/latest/getting_started/quickstart.html)（素材整理：蓝色大肥鱼）。全部为公开页面只读抓取，抓取时间见文内标注。
+<div class="notice">本文由 AI 辅助生成：事实只来自标注来源的公开材料，抓取时间 2026-11-07；
+不构成任何购买建议。</div>
+</main><footer class="site">内容由 AI 辅助生成（数据来源均已标注）·
+  生成于 2026-11-07 ·
+  <a href="https://lax.github.io/blue-fish-lab/">https://lax.github.io/blue-fish-lab/</a></footer></body></html>
