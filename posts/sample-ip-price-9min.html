@@ -1,6 +1,6 @@
 <!DOCTYPE html><html lang="zh"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>14分钟｜opencode Go 调价修订：讲清 DeepSeek 涨价、配额降档后，日常编码该换谁 · 蓝色大肥鱼 Lab</title>
+<title>14分钟｜opencode Go 调价修订：讲清 DeepSeek 涨价、配额降档后，日常编码该换谁 · 蓝色大肥鱼 Lab · 蓝色大肥鱼 Lab</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lxgw-wenkai-webfont@1.7.0/style.css">
 <link rel="stylesheet" href="/style.css"></head>
 <body><header class="site"><div class="wrap">
@@ -8,7 +8,7 @@
   <nav><a href="/">文章</a><a href="/slides/radar-01.html">选题雷达</a><a href="/about.html">关于与合规</a></nav>
 </div></header><main class="wrap">
 <div class="kicker">实测与解读</div>
-<h1>14分钟｜opencode Go 调价修订：讲清 DeepSeek 涨价、配额降档后，日常编码该换谁</h1>
+<h1>14分钟｜opencode Go 调价修订：讲清 DeepSeek 涨价、配额降档后，日常编码该换谁 · 蓝色大肥鱼 Lab</h1>
 <div class="meta">AI 工具 · 实测与解读 · 成片时长 14 分钟</div>
 <h2>如果你正在用 opencode Go 做日常开发，这期用大约9分钟讲清三件事：这次到底改了哪些模型，DeepSeek 为什么同时涨价和降配额，以及普通编码、384K长输出、复杂推理和架构级任务分别该怎么分配。先说最核心的判断：不是整个模型表都在涨价，而是 DeepSeek V4 Flash 和 V4 Pro 的价格、配额发生了变化。$10/月订阅仍然划算，但“无脑默认用 DeepSeek”的用法需要调整。</h2><p>这次调整后，最值得记住的不是某一个涨幅，而是模型分工变了：日常编码可以把 MiMo-V2.5 作为主力；Qwen3.7 Plus、GLM-5.2承接测试、文档、重构和复杂推理；DeepSeek V4 Flash只用于384K长输出等特殊任务，并尽量错峰；DeepSeek V4 Pro留作关键架构推理。也就是说，订阅价格没有让整套服务失去价值，但DeepSeek已经不适合继续承担无限量的默认调用。</p>
 <p>这期内容直接对应一个很实际的问题：旧方案里，DeepSeek V4 Flash因为单价低、月请求预估高，被定位成日常基本无限用的主力模型。新版文档调整后，这个前提已经不成立。如果不重排模型分工，用户很可能在正常上班时间，也就是peak时段，持续支付更高的输入、输出和缓存读取价格，同时还会更早碰到DeepSeek的$15配额限制。接下来的梳理会分别说明变化是什么、为什么重要，以及怎么用官方文档中的价格、配额、请求预估和时段规则去验证自己的使用方案。</p><h2>要点</h2><ol><li>第一，先把调整范围说清楚：这次不是所有模型统一涨价。新版只动了 DeepSeek V4 Flash 和 DeepSeek V4 Pro；其余16个模型的价格、$60配额和月请求预估与旧版一致。与此同时新增了 GLM-5.3，所以模型总数从18个变成19个。这个区别很重要，因为“DeepSeek涨价”不等于“opencode Go全部模型都涨价”。怎么验证？最直接的方法是逐项对照8月7日旧文档和8月16日新版文档，重点看三个维度：单价、月配额档位和月请求预估。如果一个模型不在这两个DeepSeek条目里，又没有出现在新增GLM-5.3这一项中，就不能把这次变化误算到它头上。</li>

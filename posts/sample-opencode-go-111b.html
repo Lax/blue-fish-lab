@@ -1,6 +1,6 @@
 <!DOCTYPE html><html lang="zh"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>14分钟｜opencode Go逐行拆解：111亿token到底怎么算，Go与Go Plus怎么选 · 蓝色大肥鱼 Lab</title>
+<title>14分钟｜opencode Go逐行拆解：111亿token到底怎么算，Go与Go Plus怎么选 · 蓝色大肥鱼 Lab · 蓝色大肥鱼 Lab</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lxgw-wenkai-webfont@1.7.0/style.css">
 <link rel="stylesheet" href="/style.css"></head>
 <body><header class="site"><div class="wrap">
@@ -8,7 +8,7 @@
   <nav><a href="/">文章</a><a href="/slides/radar-01.html">选题雷达</a><a href="/about.html">关于与合规</a></nav>
 </div></header><main class="wrap">
 <div class="kicker">实测与解读</div>
-<h1>14分钟｜opencode Go逐行拆解：111亿token到底怎么算，Go与Go Plus怎么选</h1>
+<h1>14分钟｜opencode Go逐行拆解：111亿token到底怎么算，Go与Go Plus怎么选 · 蓝色大肥鱼 Lab</h1>
 <div class="meta">AI 工具 · 实测与解读 · 成片时长 14 分钟</div>
 <h2>很多人看到“opencode Go有111亿token”，第一反应是自己买了111亿token的总量。但官方额度表写的核心其实是不同模型在5小时、每周和每月窗口内的请求限制。社区把请求数、单请求token和持续满负荷运行组合起来，才换算出了“111亿”这个数字。这条视频就按官方额度表逐行拆开：它是什么、为什么会让人算不清、应该怎么验证，以及Go和Go Plus分别适合什么使用方式。</h2><p>“111亿token”不是opencode官方承诺的固定token包，也不是每个人实际都能用到的额度。它更接近一种极限换算：选请求额度较高的模型，按某个单请求token消耗计算，再假设5小时窗口持续跑满并维持整月。它的参考价值，在于帮助理解请求额度和token消耗之间的关系；真正决定使用体验的，仍然是你选哪个模型、每个窗口能发多少次、每周和每月用了多少，以及实际coding agent每次请求会消耗多少token。</p>
 <p>看懂这一步，才能分清“官方给了多少请求”“社区换算成多少token”以及“自己实际能用多少”。如果只看111亿，容易高估便宜模型档位；如果只看Kimi K3每5小时110次，又容易忽略其他模型和Go Plus的差别。把模型、窗口、工作流与退款、续用规则放在一起看，才能判断10美元的Go、40美元的Go Plus，以及免费层和Extra Usage，分别在什么情况下更合适。</p><h2>要点</h2><ol><li>先看套餐本体：opencode Go月费10美元，首月5美元；Go Plus月费40美元。这里最重要的不是把两个价格放在一起比，而是确认官方并不是发给你一个统一的“111亿token额度包”。额度按照5小时、每周、每月三个计量窗口计算，并且先到先停。也就是说，一个模型即使在5小时内还有请求空间，只要周额度或月额度先耗尽，也可能无法继续使用对应档位。因此判断套餐时，要先接受一个前提：官方表主要限制的是请求频次与窗口，而不是承诺一个可以任意分配的token总数。</li>

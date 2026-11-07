@@ -1,6 +1,6 @@
 <!DOCTYPE html><html lang="zh"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>10分钟｜实测拆解：dsh-Go 13天破万星，agent-autoloop如何让AI Agent离开终端 · 蓝色大肥鱼 Lab</title>
+<title>10分钟｜实测拆解：dsh-Go 13天破万星，agent-autoloop如何让AI Agent离开终端 · 蓝色大肥鱼 Lab · 蓝色大肥鱼 Lab</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lxgw-wenkai-webfont@1.7.0/style.css">
 <link rel="stylesheet" href="/style.css"></head>
 <body><header class="site"><div class="wrap">
@@ -8,7 +8,7 @@
   <nav><a href="/">文章</a><a href="/slides/radar-01.html">选题雷达</a><a href="/about.html">关于与合规</a></nav>
 </div></header><main class="wrap">
 <div class="kicker">实测与解读</div>
-<h1>10分钟｜实测拆解：dsh-Go 13天破万星，agent-autoloop如何让AI Agent离开终端</h1>
+<h1>10分钟｜实测拆解：dsh-Go 13天破万星，agent-autoloop如何让AI Agent离开终端 · 蓝色大肥鱼 Lab</h1>
 <div class="meta">AI 工具 · 实测与解读 · 成片时长 10 分钟</div>
 <h2>这条视频用12分钟拆解两个刚在GitHub冒头的新项目：dsh-Go和agent-autoloop。一个把AI编程Agent装进手机，一个让它在后台自己接活、自己跟到底。我会讲清它们分别是什么、为什么值得关注、机制怎么跑、以及现有开发者该怎么选、怎么验证。</h2><p>最值得记住的判断是：AI Agent正在从「守在终端里等人操作」，转成「手机随时接管」和「后台事件自动调度」两种工作流。两个仓库一个往手机走，一个往后台走，合起来回答的是同一件事——Agent变多之后，人在哪、人在干什么，得重新设计。</p>
 <p>如果你已经在用AI编程工具，这期直接讲清两个新项目到底解决什么实际问题、配置入口在哪、以及哪些功能目前只能谨慎试用，不做功能吹嘘。</p><h2>要点</h2><ol><li>先看背景信号。2026年11月初，Hacker News 上一篇《Ask HN: What's your current AI agentic setup?》拿到537分、669条评论。评论区在讨论的不是「要不要用Agent」，而是「Agent工作流到底该怎么搭」——这说明搭工作流已经是全球开发者的共同焦虑。同一时期GitHub冒出两个新仓库，正好代表两个方向：一个往手机走，一个往后台走。</li>

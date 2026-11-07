@@ -1,6 +1,6 @@
 <!DOCTYPE html><html lang="zh"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>13分钟｜Omarchy 移植 Gentoo 实战：用讲清 ebuild 架构、自动同步与安装流程 · 蓝色大肥鱼 Lab</title>
+<title>13分钟｜Omarchy 移植 Gentoo 实战：用讲清 ebuild 架构、自动同步与安装流程 · 蓝色大肥鱼 Lab · 蓝色大肥鱼 Lab</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lxgw-wenkai-webfont@1.7.0/style.css">
 <link rel="stylesheet" href="/style.css"></head>
 <body><header class="site"><div class="wrap">
@@ -8,7 +8,7 @@
   <nav><a href="/">文章</a><a href="/slides/radar-01.html">选题雷达</a><a href="/about.html">关于与合规</a></nav>
 </div></header><main class="wrap">
 <div class="kicker">实测与解读</div>
-<h1>13分钟｜Omarchy 移植 Gentoo 实战：用讲清 ebuild 架构、自动同步与安装流程</h1>
+<h1>13分钟｜Omarchy 移植 Gentoo 实战：用讲清 ebuild 架构、自动同步与安装流程 · 蓝色大肥鱼 Lab</h1>
 <div class="meta">AI 工具 · 实测与解读 · 成片时长 13 分钟</div>
 <h2>这不是把几份安装命令抄到 Gentoo 上就结束了。Omarchy on Gentoo 真正要解决的，是上游配方怎样变成 ebuild、上游更新怎样持续进入 overlay、构建失败怎样被提前发现，以及用户究竟该从哪个仓库安装、又有哪些东西不归这套移植负责。这条视频就沿着这四层，把这个项目从定位、目录结构、维护闭环一直讲到实际安装。</h2><p>最值得记住的判断是：这不是一次性的手工移植，而是一套由上游同步、转换规则、每夜实际构建、问题追踪和镜像发布组成的持续维护流程。对用户来说，日常只需要维护并同步 omarchy overlay；如果需要完整桌面，再补上 guru 和 hyproverlay，而不是直接修改生成出来的镜像仓库。</p>
 <p>如果你正在 Gentoo 上尝试 Omarchy，这期能帮你分清开发仓库、用户侧 overlay 和 Portage 仓库名之间的区别，也能理解仓库优先级为什么重要、安装命令各自会拉入什么、USE 约束和许可证要怎样处理，以及内核和引导程序为什么仍然需要用户自己负责。</p><h2>要点</h2><ol><li>先看项目定位。Omarchy on Gentoo 是把 Omarchy 桌面环境移植到 Gentoo Linux 的社区项目，不属于上游 Omarchy，也不提供所谓“Gentoo 官方版”。它覆盖 Hyprland、quickshell 以及周边工具，并以源码构建的 ebuild 形式提供。README 给出的安装思路，是让 Gentoo 的 Portage 管理一个额外仓库，再通过 `omarchy/omarchy` 或 `omarchy/omarchy-base` 安装桌面核心或完整默认应用集合。</li>

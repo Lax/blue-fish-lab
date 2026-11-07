@@ -1,6 +1,6 @@
 <!DOCTYPE html><html lang="zh"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>9分钟｜拆透 agent-autoloop：让 Claude Code 等命令行 Agent 后台自动接活 · 蓝色大肥鱼 Lab</title>
+<title>9分钟｜拆透 agent-autoloop：让 Claude Code 等命令行 Agent 后台自动接活 · 蓝色大肥鱼 Lab · 蓝色大肥鱼 Lab</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lxgw-wenkai-webfont@1.7.0/style.css">
 <link rel="stylesheet" href="/style.css"></head>
 <body><header class="site"><div class="wrap">
@@ -8,7 +8,7 @@
   <nav><a href="/">文章</a><a href="/slides/radar-01.html">选题雷达</a><a href="/about.html">关于与合规</a></nav>
 </div></header><main class="wrap">
 <div class="kicker">实测与解读</div>
-<h1>9分钟｜拆透 agent-autoloop：让 Claude Code 等命令行 Agent 后台自动接活</h1>
+<h1>9分钟｜拆透 agent-autoloop：让 Claude Code 等命令行 Agent 后台自动接活 · 蓝色大肥鱼 Lab</h1>
 <div class="meta">AI 工具 · 实测与解读 · 成片时长 9 分钟</div>
 <h2>这条视频讲清 agent-autoloop 怎么让 Claude Code、Codex 等命令行 Agent 在后台接任务、跑完后退出，只在需要人拍板时再通知你。重点不是它能不能替你写代码，而是事件、派活、执行、确认和续跑这五步到底怎么串起来。</h2><p>最值得记住的判断是：如果你每天重复派活、经常要等 Agent 跑完，并且希望自己只负责拍板而不是守着终端，才值得引入这类自动化中台。它适合把重复流程交给规则调度，但目前仍应先按仓库文档验证自己的场景。</p>
 <p>已经使用命令行 Agent 的开发者，可以直接对照五个运行机制和七个现成场景，判断自己的重复工作是否适合交给后台流程。理解它的边界，比单纯看它支持多少 Agent 更重要。</p><h2>要点</h2><ol><li>第一，先看它解决的问题。Claude Code、Codex 这类命令行 Agent 通常要人守着终端；窗口关掉或人离开，正在进行的流程就可能中断。agent-autoloop 想补的，正是这段无人值守时间。</li>

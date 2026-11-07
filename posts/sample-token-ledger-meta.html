@@ -1,6 +1,6 @@
 <!DOCTYPE html><html lang="zh"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>8分钟｜我养的 AI 鱼到底吃多少 Token？blue-big-fish 真实台账与额度实测 · 蓝色大肥鱼 Lab</title>
+<title>8分钟｜我养的 AI 鱼到底吃多少 Token？blue-big-fish 真实台账与额度实测 · 蓝色大肥鱼 Lab · 蓝色大肥鱼 Lab</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lxgw-wenkai-webfont@1.7.0/style.css">
 <link rel="stylesheet" href="/style.css"></head>
 <body><header class="site"><div class="wrap">
@@ -8,7 +8,7 @@
   <nav><a href="/">文章</a><a href="/slides/radar-01.html">选题雷达</a><a href="/about.html">关于与合规</a></nav>
 </div></header><main class="wrap">
 <div class="kicker">实测与解读</div>
-<h1>8分钟｜我养的 AI 鱼到底吃多少 Token？blue-big-fish 真实台账与额度实测</h1>
+<h1>8分钟｜我养的 AI 鱼到底吃多少 Token？blue-big-fish 真实台账与额度实测 · 蓝色大肥鱼 Lab</h1>
 <div class="meta">AI 工具 · 实测与解读 · 成片时长 8 分钟</div>
 <h2>这条视频不讲模糊估价，直接翻 blue-big-fish 的 SQLite 台账：同一条 AI 鱼，为什么轻量巡逻日约消耗一万 Token，产线全开日却接近五十六万？还会拆清五小时窗口、周月额度，以及订阅和按量双 Key 路由。</h2><p>真正该记住的不是某个总数，而是先按任务类型记账：巡逻和深度生产属于两种完全不同的预算。遇到额度异常时，要同时核对五小时窗口与周月限制，别把窗口刷新误判成总用量恢复。</p>
 <p>如果你正在用 Cursor、Claude Code 或 Copilot 做自动化，这套台账维度可以直接借鉴：记录日期、阶段、模型、Token，再结合唤醒次数、窗口水位和代码护栏，用真实消耗替代拍脑袋估算。</p><h2>要点</h2><ol><li>第一条，先搭一本能对账的流水账。blue-big-fish 跑完任务后，把每天的 Token 消耗写入 SQLite 的 data/fish.db。后续判断波动时，先有原始记录，再谈原因。</li>

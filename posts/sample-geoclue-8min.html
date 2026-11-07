@@ -1,6 +1,6 @@
 <!DOCTYPE html><html lang="zh"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>5分钟｜保姆级实战：GeoClue 时区被代理改成日本的完整修复 · 蓝色大肥鱼 Lab</title>
+<title>5分钟｜保姆级实战：GeoClue 时区被代理改成日本的完整修复 · 蓝色大肥鱼 Lab · 蓝色大肥鱼 Lab</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lxgw-wenkai-webfont@1.7.0/style.css">
 <link rel="stylesheet" href="/style.css"></head>
 <body><header class="site"><div class="wrap">
@@ -8,7 +8,7 @@
   <nav><a href="/">文章</a><a href="/slides/radar-01.html">选题雷达</a><a href="/about.html">关于与合规</a></nav>
 </div></header><main class="wrap">
 <div class="kicker">实测与解读</div>
-<h1>5分钟｜保姆级实战：GeoClue 时区被代理改成日本的完整修复</h1>
+<h1>5分钟｜保姆级实战：GeoClue 时区被代理改成日本的完整修复 · 蓝色大肥鱼 Lab</h1>
 <div class="meta">AI 工具 · 实测与解读 · 成片时长 5 分钟</div>
 <h2>这条视频用8分钟讲清：GNOME 自动时区为什么会被代理带到日本，以及如何用两组 systemd drop-in 配置修复并验证。</h2><p>最值得记住的判断是：如果 GNOME 自动时区反复变成 JST，先查 GeoClue 和 gsd-datetime 的定位请求是否绕过了代理出口。</p>
 <p>这套排查和配置能直接用于 Gentoo、Linux、GNOME 环境中，自动时区被代理干扰、时区手动修改后又被覆盖的问题。</p><h2>要点</h2><ol><li>【症状】GNOME 自动时区开启后，系统会锁定在 JST；即使手动改成 Shanghai，重启 gsd-datetime 后仍会被覆盖。【画面】展示错误时区、自动时区开关，以及修改后重启再次变回 JST 的过程。【口播】先明确问题不是普通的时区文件写错，而是后台定位服务持续返回日本结果。</li>
