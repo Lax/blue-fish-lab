@@ -2,7 +2,7 @@
 :root { --paper:#FAF9F5; --ink:#1F2937; --sub:#46505F; --muted:#788291;
         --accent:#0D6E6C; --line:#E3E7EC; }
 * { box-sizing: border-box; }
-body { margin:0; background:var(--paper); color:var(--ink);
+body { margin:0; background:var(--paper); color:rgba(0,0,0,0.82);
   font-family:'LXGW WenKai','Noto Serif CJK SC',serif; line-height:1.9; }
 a { color:var(--accent); text-decoration:none; }
 a:hover { text-decoration:underline; }
@@ -40,7 +40,7 @@ code { background:#F2F1EC; padding:2px 6px; border-radius:4px; }
   justify-content:center; padding:0 9%; border-bottom:1px solid var(--line); }
 .slide .k { color:var(--accent); letter-spacing:.12em; font-size:1rem; margin-bottom:1em; }
 .slide .t { font-size:2.4rem; font-weight:600; line-height:1.45; }
-.slide .b { font-size:1.25rem; color:var(--sub); margin-top:1.2em; }
+.slide .b { font-size:1.25rem; color:rgba(0,0,0,0.72); margin-top:1.2em; }
 .slide .m { margin-top:2em; color:var(--muted); font-size:.9rem; }
 .hint { position:fixed; bottom:18px; right:24px; color:var(--muted); font-size:.85rem; }
 @media (max-width:640px){ .slide .t{font-size:1.6rem} .slide .b{font-size:1.05rem} }
