@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://liulantao.com/blue-fish-lab/sitemap.xml
