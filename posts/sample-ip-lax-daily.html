@@ -1,0 +1,30 @@
+<!DOCTYPE html><html lang="zh"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>12分钟｜opencode Go 保姆级实战：搭建从需求分析到测试验收的 AI 开发工作流 · 蓝色大肥鱼 Lab</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lxgw-wenkai-webfont@1.7.0/style.css">
+<link rel="stylesheet" href="/style.css"></head>
+<body><header class="site"><div class="wrap">
+  <a class="brand" href="/">蓝色大肥鱼 · Lab</a>
+  <nav><a href="/">文章</a><a href="/slides/radar-01.html">选题雷达</a><a href="/about.html">关于与合规</a></nav>
+</div></header><main class="wrap">
+<div class="kicker">实测与解读</div>
+<h1>12分钟｜opencode Go 保姆级实战：搭建从需求分析到测试验收的 AI 开发工作流</h1>
+<div class="meta">AI 工具 · 实测与解读 · 成片时长 12 分钟</div>
+<h2>这条视频用 opencode Go 套餐和 Zen 免费模型，演示如何把需求分析、产品设计、开发架构、日常编码、复杂重构、测试验收、提交与文档这些阶段，分别交给合适的模型处理。重点不只是“有哪些模型”，而是怎样通过 agents 固定职责和权限，再用 skills 把重复流程写成可复用模板。</h2><p>这套方法最值得记住的地方，是按开发阶段分配模型：opencode Go 每月 $10，提供 18 个模型和 $60 月度额度；再配合 Zen 的 8 个免费模型，不开启 Zen 按量付费，就能搭建一套预算固定、流程完整的 AI 开发工作流。</p>
+<p>如果你正在使用 opencode，这套配置能直接回答三个具体问题：每个阶段该用哪个模型，模型之间怎么切换，以及怎样把需求审查、测试覆盖这类重复工作固化成模板。最终目标不是让一个模型包办所有事情，而是让不同模型在不同环节发挥各自作用，同时让调用方式和操作边界保持清楚。</p><h2>要点</h2><ol><li>第一步先算总账。opencode Go 每月 $10，包含 18 个模型和 $60 月度额度；Zen 另外还有 8 个零成本模型，定位是辅助角色。使用时只订阅 Go，不开启 Zen 按量付费，组合后的固定成本就是 $10/月。材料以日常编码为例估算，DeepSeek V4 Flash 单次请求约 $0.00038，一个月的编码量消耗不到 $12 额度，剩余约 $48 可以分给测试、设计和架构阶段。这样的预算划分很重要，因为完整开发流程不是只靠日常编码模型，而是由多个阶段共同消耗额度。验证时先看控制台里的实际额度、使用情况和模型可用性，再根据真实项目调整频率。</li>
+<li>需求分析阶段，核心是深度理解 PRD 和用户故事。主力模型选 Go 里的 Qwen3.7 Max，它提供 1M 上下文，适合把需求材料放进同一个上下文里分析；如果遇到特别晦涩、歧义较大的内容，再切换到推理更细致的 GLM-5.2。这个阶段的交互频率不高，因此对 Go 额度的整体影响较小。实际使用时，可以让 architect agent 先检查需求结构、边界条件和功能依赖，再把有歧义的部分交给交叉审查模型复核。材料还建议使用 prd-review skill：检查需求是否符合 INVEST 原则，识别未定义的边界条件，列出功能之间的隐式依赖，并生成可度量的验收标准。对话中可以直接说“加载 prd-review skill 并审查当前的 spec.md”，把一次性的审查动作变成固定流程。</li>
+<li>产品设计阶段，输出通常包括 API contract 和数据模型，因此更适合交给擅长结构化输出的模型。材料给出的组合是：Qwen3.8 Max 负责方案起草，GLM-5.2 负责交叉审查；一次完整设计 session 预计消耗约 $1–2 Go 额度。对应的 designer agent 绑定 Qwen3.8 Max，temperature 设为 0.5，既保留一定设计空间，又通过权限设置让编辑操作可以直接执行，而 bash 被拒绝。怎么用更清楚：先让一个模型产出契约和数据模型，再让另一个模型检查方案是否存在不一致或遗漏。材料没有给出额外的设计验收指标，所以这里应直接检查生成的 API contract、数据模型和审查结果是否满足当前需求，而不是额外承诺固定效果。</li>
+<li>开发架构阶段，主要处理系统设计和技术选型。材料推荐 DeepSeek V4 Pro，价格标注为 $0.435/$0.87，提供 1M 上下文和 384K 输出，适合架构级推理。遇到关键安全审查时，可以切换到 Kimi K3；材料给出的使用节奏是每月三五次。偶尔想尝试不同的大规模推理风格，也可以使用 Zen Free 中的 Nemotron 3 Ultra Free。对应的 architect agent 在示例配置中绑定 Qwen3.7 Max，但正文阶段分配里，架构主力又列为 DeepSeek V4 Pro，因此实际操作时还需要根据任务切换模型，而不能把 agent 名称理解成不可改变。验证方法可以落到模型输出能否覆盖系统边界、技术选型、模块关系和关键安全审查上，再结合控制台核对额度消耗。</li>
+<li>日常编码是整个流程里消耗最大的环节，材料估算它占全流程 60% 以上令牌，所以 coder 应该绑定高频、低成本的 DeepSeek V4 Flash，并把 temperature 设为 0。材料按 $60 额度计算，DeepSeek V4 Flash 可支持约 158K 次/月，日常使用基本不受限制；MiMo-V2.5 作为同价替补，想换一种风格时，还可以使用 Zen Free 的 Big Pickle。coder 被设为 primary，也就是默认承担主要编码工作，Tab 键可以随时切回。权限上，edit 允许，bash 中的通用命令需要询问，但 git diff 和 git log 可以直接执行。使用时不要把所有任务都塞进一次请求，可以按模块让 coder 读取上下文、完成修改，再用 git diff 和 git log 检查变更。</li>
+<li>复杂重构与日常编码要分开配置。跨文件逻辑重组先用 DeepSeek V4 Pro 做方案推演，利用它的 1M 上下文一次读完整个模块；需要一次产出大段代码时，再切到 Kimi K2.7 Code，它的上下文和输出都标注为 262K，适合一次生成数百行代码的场景。可对应的 debugger agent 默认绑定 DeepSeek V4 Pro，temperature 为 0.1，权限允许读取 git diff 和 git log，其余 bash 操作需要询问。实际验证不能只看“代码生成了没有”，而要看重构方案是否覆盖相关文件、变更是否能通过 diff 检查、根因分析是否引用了实际改动记录。材料没有提供重构成功率的固定指标，因此应以项目自身的测试与验收结果为准。</li>
+<li>测试验收阶段适合拆成日常测试生成和集成测试补充。日常测试生成使用 Qwen3.7 Plus，材料标注其价格为 $0.40/$1.60；GPT 5.6 Luna 用于补充集成测试，价格标注为 $0.20/$1.20。材料估算，一天几百次测试生成消耗不到 $5 Go 额度。reviewer agent 可以绑定 Qwen3.7 Plus，temperature 设为 0.1，edit 需要询问。测试覆盖还可以加载 test-coverage skill：扫描变更文件的函数签名和分支，标记 happy path、edge case、error path 等未覆盖路径，为每条路径生成测试用例骨架，最后输出从文件到函数、再到已覆盖或未覆盖状态的覆盖矩阵。这样验证时，就不是只让模型泛泛写测试，而是先看它找出了哪些路径，再检查测试骨架是否对应这些路径。</li>
+<li>提交信息和文档属于高频、轻量任务。材料建议使用 GPT 5.6 Luna 生成 commit message，它每天几百次提交几乎不消耗额度；如果希望这部分完全零成本，可以切换到 Zen Free 的 Ling-3.0-tiny。材料把 Ling 描述为 7.9B MoE、仅 1.3B 激活、延迟极低，适合瞬间回复。scribe agent 可以绑定 GPT 5.6 Luna，temperature 设为 0，edit 需要询问，bash 直接拒绝。实际使用时，可以用它处理提交说明、发布说明和文档，但材料中的核心提醒是：免费模型适合作为辅助角色，不要拿它处理敏感代码。是否切换到免费模型，应根据任务敏感程度、延迟要求和当月预算决定，而不是只看单次调用是否免费。</li>
+<li>真正让这套方案落地的，是把模型、职责和权限一起写进 opencode.jsonc。材料给出的配置包括 architect、designer、coder、reviewer、debugger 和 scribe：coder 使用 primary，其他多数角色使用 subagent；模型都绑定 opencode-go/ 前缀，对应 Go 订阅中的模型。只连接 Go provider 即可，Zen 免费模型不需要额外连接，因为免费模型也在 Zen 这个 provider 中。其他 agent 可以通过 @name 手动调用，例如用 @architect 审查当前模块的数据模型设计，或者在阶段之间切换到 @debugger。temperature 也不是统一设置：编码和架构倾向于 0.1–0.2，强调确定性；设计设为 0.5，保留创意空间；测试和文档设为 0–0.1，追求一致性。这样配置之后，模型切换不只是临时选择，而是成为项目基础设施的一部分。</li>
+<li>最后再检查额度分配是否合理。材料给出的示例计划是：DeepSeek V4 Flash 约 30,000 次、消耗约 $11；Qwen3.7 Plus 约 5,000 次、约 $14；DeepSeek V4 Pro 约 2,000 次、约 $2；Qwen3.8 Max 约 200 次、约 $4；Qwen3.7 Max 约 100 次、约 $4；Kimi K2.7 Code 约 200 次、约 $2；Kimi K3 约 30 次、约 $1；GPT 5.6 Luna 约 5,000 次、约 $5；MiMo-V2.5 约 5,000 次、约 $2；GLM-5.2 约 100 次、约 $1。合计约 $46，留下约 $14 余量处理突发需求。如果超出 $60，可以在控制台启用“使用余额”选项，并自动回退到 Zen Free 模型，避免请求被直接拦截。需要注意的是，这份分配是材料中的计划值，不是实际消耗保证；最终仍应通过控制台验证，并根据请求量、模型价格和项目阶段变化重新调整。</li></ol>
+<h2>边界说明</h2><p>本文的数据、模型能力和配置依据材料所述的 Go 文档、Zen 定价页及作者估算，相关页面标注更新于 2026-08-07。免费模型在免费期间的数据可能被用于训练，因此不要用来处理敏感代码。$60 额度、各模型调用次数与阶段消耗属于示例估算，实际额度、模型可用性、价格和消耗应以控制台为准；材料也没有承诺固定产出效果或任何收益。</p>
+<h2>参考来源</h2><p>《opencode Go + 免费模型：$10/月覆盖完整开发流程》— ｜
+<a href="https://liulantao.com/blog/2026/2026-08-09-opencode-go-free-workflow.html">https://liulantao.com/blog/2026/2026-08-09-opencode-go-free-workflow.html</a>（画面与文字均为自制，数据转述自上述材料）</p>
+<div class="notice">本文由 AI 辅助生成并已按规约标识；不构成任何购买建议。</div>
+</main><footer class="site">内容由 AI 辅助生成（数据来源均已标注）·
+  生成于 2026-11-07 ·
+  <a href="https://lax.github.io/blue-fish-lab/">https://lax.github.io/blue-fish-lab/</a></footer></body></html>

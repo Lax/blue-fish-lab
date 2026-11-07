@@ -1,0 +1,28 @@
+<!DOCTYPE html><html lang="zh"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>5分钟｜保姆级实战：GeoClue 时区被代理改成日本的完整修复 · 蓝色大肥鱼 Lab</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lxgw-wenkai-webfont@1.7.0/style.css">
+<link rel="stylesheet" href="/style.css"></head>
+<body><header class="site"><div class="wrap">
+  <a class="brand" href="/">蓝色大肥鱼 · Lab</a>
+  <nav><a href="/">文章</a><a href="/slides/radar-01.html">选题雷达</a><a href="/about.html">关于与合规</a></nav>
+</div></header><main class="wrap">
+<div class="kicker">实测与解读</div>
+<h1>5分钟｜保姆级实战：GeoClue 时区被代理改成日本的完整修复</h1>
+<div class="meta">AI 工具 · 实测与解读 · 成片时长 5 分钟</div>
+<h2>这条视频用8分钟讲清：GNOME 自动时区为什么会被代理带到日本，以及如何用两组 systemd drop-in 配置修复并验证。</h2><p>最值得记住的判断是：如果 GNOME 自动时区反复变成 JST，先查 GeoClue 和 gsd-datetime 的定位请求是否绕过了代理出口。</p>
+<p>这套排查和配置能直接用于 Gentoo、Linux、GNOME 环境中，自动时区被代理干扰、时区手动修改后又被覆盖的问题。</p><h2>要点</h2><ol><li>【症状】GNOME 自动时区开启后，系统会锁定在 JST；即使手动改成 Shanghai，重启 gsd-datetime 后仍会被覆盖。【画面】展示错误时区、自动时区开关，以及修改后重启再次变回 JST 的过程。【口播】先明确问题不是普通的时区文件写错，而是后台定位服务持续返回日本结果。</li>
+<li>【根因】GeoClue 会通过 BeaconDB 获取定位，gsd-datetime 再通过 Nominatim 把坐标转换成时区；两者都返回日本，最终就会把系统时区设成 JST。【画面】用流程图串起 GeoClue、BeaconDB、坐标、Nominatim 和时区。【口播】理解这条链路，才能解释为什么手动设置只维持一小段时间。</li>
+<li>【代理环节】libsoup 使用 portal proxy，请求从代理出口访问定位服务；材料显示代理出口位于日本，因此服务商返回了日本位置。【画面】高亮“系统服务请求”和“用户服务请求”两条链路。【口播】这里的关键不是代理软件本身，而是定位请求经过代理后，服务器依据出口位置返回了日本。</li>
+<li>【链路复盘】完整路径是 GeoClue 到 portal proxy，再到日本 IP、BeaconDB 和 Osaka，最终得到 JST；gsd-datetime 也会经 portal proxy，通过日本 IP 查询 Nominatim，再次得到 Japan 和 JST。【画面】逐段点亮双向链路。【口播】两条链路共同解释自动时区为何稳定地落在日本。</li>
+<li>【配置一】给系统服务 GeoClue 创建 `/etc/systemd/system/geoclue.service.d/no-proxy.conf`，写入 `[Service]` 和 `Environment=no_proxy=api.beacondb.net,reallyfreegeoip.org`。【画面】展示目录、配置内容和对应域名。【口播】GeoClue 是系统服务且不走 portal，因此可以按具体域名设置 no_proxy。</li>
+<li>【配置二】给用户服务 gsd-datetime 创建 `~/.config/systemd/user/org.gnome.SettingsDaemon.Datetime.service.d/no-proxy.conf`，写入 `[Service]` 和 `Environment=no_proxy=*`。【画面】展示用户级 drop-in 路径与通配符。【口播】这里必须使用 `*`，因为 portal 不检查具体域名匹配，只有 `*` 才会跳过 portal 入口。</li>
+<li>【配置生效】两组 drop-in 分别写入系统服务目录和用户服务目录；材料给出了对应配置方案，但没有提供重载与重启命令，因此具体生效步骤应结合当前 systemd 状态执行。【画面】用系统层与用户层目录对照图收束配置部分。【口播】重点记住两层服务要分别处理，不能只改其中一个。</li>
+<li>【验证结果】先执行 `journalctl -u geoclue.service | grep "Failed to query"`，修复前会反复超时，修复后不再超时；再运行 `/usr/libexec/geoclue-2.0/demos/where-am-i`，材料中的结果为 `38.036, 114.470`，即石家庄；最后用 `timedatectl status` 确认 `Asia/Shanghai (CST, +0800)`。【画面】逐条展示命令和结果。【口播】日志、定位坐标、最终时区三项一起验证，才能确认修复有效。</li></ol>
+<h2>边界说明</h2><p>材料只给出了定位结果坐标、时区结果与 drop-in 配置，没有提供 drop-in 写入后的完整 systemd 重载、重启命令，也没有覆盖不同发行版、GNOME 版本及代理环境可能存在的差异。</p>
+<h2>参考来源</h2><p>《GeoClue 时区被代理干扰修复》— ｜
+<a href="https://liulantao.com/blog/2026/2026-07-08-geoclue-timezone-fix.html">https://liulantao.com/blog/2026/2026-07-08-geoclue-timezone-fix.html</a>（画面与文字均为自制，数据转述自上述材料）</p>
+<div class="notice">本文由 AI 辅助生成并已按规约标识；不构成任何购买建议。</div>
+</main><footer class="site">内容由 AI 辅助生成（数据来源均已标注）·
+  生成于 2026-11-07 ·
+  <a href="https://lax.github.io/blue-fish-lab/">https://lax.github.io/blue-fish-lab/</a></footer></body></html>
