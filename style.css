@@ -43,4 +43,32 @@ code { background:#F2F1EC; padding:2px 6px; border-radius:4px; }
 .slide .b { font-size:1.25rem; color:rgba(0,0,0,0.72); margin-top:1.2em; }
 .slide .m { margin-top:2em; color:var(--muted); font-size:.9rem; }
 .hint { position:fixed; bottom:18px; right:24px; color:var(--muted); font-size:.85rem; }
-@media (max-width:640px){ .slide .t{font-size:1.6rem} .slide .b{font-size:1.05rem} }
+/* 响应式：小屏适配（手机竖屏 360~640px） */
+@media (max-width: 640px) {
+  .wrap { padding: 28px 16px 64px; }
+  h1 { font-size: 1.5rem; }
+  h2 { font-size: 1.15rem; }
+  .hero h1 { font-size: 1.7rem; }
+  header.site .wrap { padding: 14px 16px; flex-wrap: wrap; }
+  header.site nav a { margin-left: 12px; font-size: .9rem; }
+  .kicker { font-size: .82rem; }
+  /* 表格横向滚动（成本表列多，小屏放不下） */
+  table { display: block; overflow-x: auto; white-space: nowrap; }
+  .card { padding: 14px 16px; }
+  .notice { padding: 10px 12px; font-size: .88rem; }
+  .slide { padding: 0 7%; }
+  .slide .t { font-size: 1.55rem; line-height: 1.4; }
+  .slide .b { font-size: 1.02rem; }
+  .hint { display: none; }
+}
+/* 中屏（平板 641~900px） */
+@media (min-width: 641px) and (max-width: 900px) {
+  .wrap { padding: 40px 32px 80px; }
+  .slide { padding: 0 7%; }
+  .slide .t { font-size: 2rem; }
+}
+/* 打印：只出正文 */
+@media print {
+  header.site, footer.site, .hint, .notice { display: none; }
+  .wrap { padding: 0; max-width: 100%; }
+}
